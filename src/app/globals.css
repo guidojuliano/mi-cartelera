@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  color-scheme: light dark;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+/* Aseguramos que el modo oscuro se aplique correctamente */
+.dark {
+  color-scheme: dark;
+}
+
+/* Aseguramos que el modo claro se aplique correctamente */
+:root {
+  color-scheme: light;
 }
