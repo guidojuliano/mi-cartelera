@@ -8,4 +8,5 @@ export type Cine = {
   icono: string;
   telefono: string;
   logo: string;
+  cadena: string;
 };

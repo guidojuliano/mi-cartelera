@@ -1,5 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchFunciones, fetchFuncionById } from "app/controller/controller";
+import {
+  fetchFunciones,
+  fetchFuncionById,
+  fetchFuncionByCineId,
+  fetchFuncionesByPeliculaId,
+} from "app/controller/controller";
 
 export const useFunciones = () => {
   const {
@@ -26,4 +31,32 @@ export const useFuncionById = (id: string) => {
     enabled: !!id,
   });
   return { funcion, isLoading, error, isError };
+};
+
+export const useFuncionByCineId = (id: string) => {
+  const {
+    data: funciones,
+    isLoading,
+    error,
+    isError,
+  } = useQuery({
+    queryKey: ["funcion", id],
+    queryFn: () => fetchFuncionByCineId(id),
+    enabled: !!id,
+  });
+  return { funciones: funciones || [], isLoading, error, isError };
+};
+
+export const useFuncionesByPeliculaId = (id: string) => {
+  const {
+    data: funciones,
+    isLoading,
+    error,
+    isError,
+  } = useQuery({
+    queryKey: ["funciones", id],
+    queryFn: () => fetchFuncionesByPeliculaId(id),
+    enabled: !!id,
+  });
+  return { funciones: funciones || [], isLoading, error, isError };
 };

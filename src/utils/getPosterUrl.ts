@@ -1,12 +1,19 @@
 export const getPosterUrl = (
-  poster: string | null,
-  poster_url: string | null
+  poster: string | null | undefined,
+  poster_url: string | null | undefined
 ) => {
+  // Si hay una URL de Supabase, úsala
   if (poster_url) {
-    return poster_url; // Usa la URL de Supabase si existe
+    return poster_url;
   }
+
+  // Si hay una ruta local, constrúyela correctamente
   if (poster) {
-    return `/assets/${poster}`; // Usa la imagen local si existe
+    // Asegúrate de que la ruta no comience con "/"
+    const cleanedPosterPath = poster.startsWith("/") ? poster.slice(1) : poster;
+    return `/assets/${cleanedPosterPath}`;
   }
-  return "/assets/images/peliculas/poster/genericPoster.jpg"; // Imagen por defecto
+
+  // Si no hay ninguna imagen, usa una por defecto
+  return "/assets/images/peliculas/poster/genericPoster.jpg";
 };

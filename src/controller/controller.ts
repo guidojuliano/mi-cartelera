@@ -1,7 +1,8 @@
-import { supabase } from "app/lib/supabase";
+import { supabase } from "app/services/supabase";
 import { Cine } from "app/models/cines";
 import { Funcion } from "app/models/funciones";
 import { Pelicula } from "app/models/peliculas";
+import { Precio } from "app/models/precios";
 
 export const fetchCines = async (): Promise<Cine[]> => {
   const { data: cines, error } = await supabase.from("cines").select("*");
@@ -9,7 +10,7 @@ export const fetchCines = async (): Promise<Cine[]> => {
   return cines ? cines.map((cine) => ({ ...cine })) : [];
 };
 
-export const fetchCineById = async (id: string): Promise<Cine | null> => {
+export const fetchCineById = async (id: string): Promise<Cine> => {
   const { data: cine, error } = await supabase
     .from("cines")
     .select("*")
@@ -25,7 +26,33 @@ export const fetchPeliculas = async (): Promise<Pelicula[]> => {
     .from("peliculas")
     .select("*");
   if (error) throw new Error(error.message);
-  return peliculas;
+  return peliculas || [];
+};
+
+export const fetchProximasEstrenosHome = async (): Promise<Pelicula[]> => {
+  const currentDate = new Date().toISOString(); // Fecha actual en formato ISO
+
+  const { data: peliculas, error } = await supabase
+    .from("peliculas")
+    .select("*")
+    .or(`estreno_rcia.gt.${currentDate},estreno_ctes.gt.${currentDate}`)
+    .order("estreno_arg", { ascending: true }); // Ordenar por fecha más próxima
+
+  if (error) throw new Error(error.message);
+  return peliculas || [];
+};
+
+export const fetchProximasEstrenos = async (): Promise<Pelicula[]> => {
+  const currentDate = new Date().toISOString(); // Fecha actual en formato ISO
+
+  const { data: peliculas, error } = await supabase
+    .from("peliculas")
+    .select("*")
+    .or(`estreno_rcia.gt.${currentDate},estreno_ctes.gt.${currentDate}`)
+    .order("estreno_arg", { ascending: true }); // Ordenar por fecha más próxima
+
+  if (error) throw new Error(error.message);
+  return peliculas || [];
 };
 
 export const fetchPeliculaById = async (
@@ -58,4 +85,34 @@ export const fetchFuncionById = async (id: string): Promise<Funcion | null> => {
 
   if (error) throw new Error(error.message);
   return funcion;
+};
+
+export const fetchFuncionByCineId = async (id: string): Promise<Funcion[]> => {
+  const { data: funciones, error } = await supabase
+    .from("funciones")
+    .select("*")
+    .eq("cine_id", id); // Devuelve múltiples resultados
+
+  if (error) throw new Error(error.message);
+  return funciones || []; // Retorna un array vacío si no hay funciones
+};
+
+export const fetchFuncionesByPeliculaId = async (
+  id: string
+): Promise<Funcion[]> => {
+  const { data: funciones, error } = await supabase
+    .from("funciones")
+    .select("*")
+    .eq("pelicula_id", id);
+  if (error) throw new Error(error.message);
+  return funciones ? funciones.map((funcion) => ({ ...funcion })) : [];
+};
+
+export const fetchPreciosByCineId = async (id: string): Promise<Precio[]> => {
+  const { data: precios, error } = await supabase
+    .from("precios")
+    .select("*")
+    .eq("cine_id", id);
+  if (error) throw new Error(error.message);
+  return precios ? precios.map((precio) => ({ ...precio })) : [];
 };

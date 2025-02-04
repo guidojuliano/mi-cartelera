@@ -1,28 +1,33 @@
 import { Star, Clock } from "lucide-react";
 import Image from "next/image";
+import parseDuracion from "app/utils/formatDuration";
+import { getPosterUrl } from "app/utils/getPosterUrl";
 
 interface MovieCardProps {
   title: string;
-  imageUrl: string;
-  rating: number;
-  duration: string;
-  genre: string;
+  poster: string | null | undefined;
+  poster_url: string | null | undefined;
+  rating?: string | undefined;
+  duration?: string | undefined;
+  genre?: string | undefined;
   isPremiere?: boolean;
 }
 
 const MovieCard = ({
   title,
-  imageUrl,
+  poster,
+  poster_url,
   rating,
   duration,
   genre,
   isPremiere,
 }: MovieCardProps) => {
+  const posterUrl = getPosterUrl(poster, poster_url);
   return (
     <div className="group relative overflow-hidden rounded-xl">
       <div className="aspect-[2/3] overflow-hidden">
         <Image
-          src={imageUrl}
+          src={posterUrl}
           alt={title}
           layout="fill"
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -31,7 +36,7 @@ const MovieCard = ({
           <div className="absolute top-3 left-3 flex items-center gap-1.5">
             <div className="relative">
               <div className="absolute inset-0 bg-red-500 blur-sm opacity-50"></div>
-              <div className="relative bg-gradient-to-r from-red-600 to-pink-600 text-white px-3 py-1 rounded-lg text-sm font-medium border border-white/10 shadow-xl backdrop-blur-sm">
+              <div className="relative bg-gradient-to-r from-red-600 to-pink-600 text-white px-3 py-1 rounded-lg text-xs font-medium border border-white/10 shadow-xl backdrop-blur-sm">
                 <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-white animate-ping"></div>
                 <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-white"></div>
                 ESTRENO
@@ -45,18 +50,29 @@ const MovieCard = ({
         <div className="absolute bottom-0 p-4 w-full">
           <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
           <div className="flex items-center space-x-4 text-sm text-white">
-            <div className="flex items-center">
-              <Star className="w-4 h-4 text-[#0C66DF] dark:text-white mr-1" />
-              <span>{rating}</span>
-            </div>
-            <div className="flex items-center">
-              <Clock className="w-4 h-4 text-[#0C66DF] dark:text-white mr-1" />
-              <span>{duration}</span>
-            </div>
+            {rating && (
+              <div className="flex items-center">
+                <Star className="w-4 h-4 text-[#0C66DF] dark:text-white mr-1" />
+                <span>{rating}</span>
+              </div>
+            )}
+            {duration && (
+              <div className="flex items-center">
+                <Clock className="w-4 h-4 text-[#0C66DF] dark:text-white mr-1" />
+                <span>{parseDuracion(duration)}</span>
+              </div>
+            )}
           </div>
-          <span className="inline-block mt-2 px-2 py-1 bg-[#0C66DF] text-white text-xs rounded-full">
-            {genre}
-          </span>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {genre?.split(/,\s*/).map((genero, index) => (
+              <span
+                key={`${genero}-${index}`} // Usar combinación de género + índice como clave
+                className="inline-block px-2 py-1 bg-[#0C66DF] text-white text-xs rounded-full"
+              >
+                {genero.trim()}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>

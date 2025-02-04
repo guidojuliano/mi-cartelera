@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "../context/ThemeContext";
-import Navbar from "app/components/Navbar";
+import Navbar from "app/components/Navbar/Navbar";
 import ThemeBackground from "app/components/ThemeBackground";
 import { ReactQueryProvider } from "app/components/ReactQueryProvider";
+import { Footer } from "app/components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,6 +40,7 @@ export default function RootLayout({
               <div className="relative z-10;">
                 <Navbar />
                 <main className="flex-1">{children}</main>
+                <Footer />
               </div>
             </div>
           </body>

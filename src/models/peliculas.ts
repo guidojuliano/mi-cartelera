@@ -33,4 +33,6 @@ export type Pelicula = {
   taquilla: number;
   link_imdb: string;
   poster: string;
+  poster_url: string;
+  slider_url: string;
 };

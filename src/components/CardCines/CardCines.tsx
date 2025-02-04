@@ -43,7 +43,7 @@ const CardCines = ({ city, theaters, loading }: CardCinesProps) => {
             <div className="aspect-[16/9] relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
               <Image
-                src="/images/cines/sala_cine.jpg"
+                src="/assets/images/cines/sala_cine.jpg"
                 alt={theater.nombre}
                 layout="fill"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -58,7 +58,7 @@ const CardCines = ({ city, theaters, loading }: CardCinesProps) => {
                   }`}
                 >
                   <Image
-                    src={`${theater.logo}`}
+                    src={`/assets${theater.logo}`}
                     alt={theater.nombre}
                     width={100}
                     height={100}
@@ -73,7 +73,7 @@ const CardCines = ({ city, theaters, loading }: CardCinesProps) => {
                   }`}
                 >
                   <Image
-                    src={`${theater.icono}`}
+                    src={`/assets${theater.icono}`}
                     alt={theater.nombre}
                     width={100}
                     height={100}
