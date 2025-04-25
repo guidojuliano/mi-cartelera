@@ -45,7 +45,7 @@ const Navbar = () => {
 
   const menuItems = [
     { label: "HORARIOS", href: "#", items: horariosItems },
-    { label: "PELÍCULAS", href: "/peliculas" },
+    { label: "PELÍCULAS", href: "/estrenos" },
     { label: "ENTRADAS", href: "#", items: entradasItems },
     { label: "PRÓXIMAS", href: "/proximas" },
     { label: "NOVEDADES", href: "/novedades" },

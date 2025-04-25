@@ -35,7 +35,7 @@ const CardCines = ({ city, theaters, loading }: CardCinesProps) => {
         {theaters.map((theater) => (
           <a
             key={theater.id}
-            href={`/theater/${theater.id}`}
+            href={`/cines/${theater.id}`}
             className={`group relative block rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 ${
               theme === "dark" ? "bg-gray-800/50" : "bg-white"
             }`}

@@ -1,5 +1,5 @@
-import MovieCarousel from "../components/MovieCarousel";
-import MovieGrid from "../components/MovieGrid";
+import MovieCarousel from "../../components/MovieCarousel";
+import MovieGrid from "../../components/MovieGrid";
 import MovieGridProximas from "app/components/MovieGridProximas";
 import CardLinksFrecuentes from "app/components/CardLinksFrecuentes";
 import { CinesContainer } from "app/components/CinesCointainer";

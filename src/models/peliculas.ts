@@ -23,7 +23,7 @@ export type Pelicula = {
   efectos: string;
   web: string;
   director: string;
-  protegonistas: string;
+  protagonistas: string;
   trailer: string;
   nota: string;
   avant: string;
@@ -35,4 +35,18 @@ export type Pelicula = {
   poster: string;
   poster_url: string;
   slider_url: string;
+  updated_at: string;
+};
+
+export type PeliculasPorFuncion = {
+  detalles: Pelicula | null | undefined;
+  id: number;
+  fecha_desde: string;
+  fecha_hasta: string;
+  sala: string;
+  idioma: string;
+  horario: string;
+  pelicula_id: number;
+  cine_id: number;
+  estreno: boolean;
 };

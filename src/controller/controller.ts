@@ -68,6 +68,19 @@ export const fetchPeliculaById = async (
   return pelicula;
 };
 
+export const fetchPeliculaBySlug = async (
+  slug: string
+): Promise<Pelicula | null> => {
+  const { data: pelicula, error } = await supabase
+    .from("peliculas")
+    .select("*")
+    .eq("slug", slug)
+    .single(); // Obtiene un solo registro
+
+  if (error) throw new Error(error.message);
+  return pelicula;
+};
+
 export const fetchFunciones = async (): Promise<Funcion[]> => {
   const { data: funciones, error } = await supabase
     .from("funciones")
@@ -115,4 +128,22 @@ export const fetchPreciosByCineId = async (id: string): Promise<Precio[]> => {
     .eq("cine_id", id);
   if (error) throw new Error(error.message);
   return precios ? precios.map((precio) => ({ ...precio })) : [];
+};
+
+export const fetchMovies = async (page: number, pageSize: number) => {
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const {
+    data: peliculas,
+    error,
+    count,
+  } = await supabase
+    .from("peliculas")
+    .select("*", { count: "exact" }) // El count te da el total de registros
+    .order("created_at", { ascending: false }) // orden opcional
+    .range(from, to);
+
+  if (error) throw error;
+  return { peliculas, count };
 };

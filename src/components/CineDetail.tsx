@@ -1,26 +1,52 @@
 "use client";
 
 import { useTheme } from "app/context/ThemeContext";
-import { Cine } from "app/models/cines";
-import { Precio } from "app/models/precios";
 import { CreditCard, MapPin } from "lucide-react";
 
-import { Horario } from "app/models/horarios";
 import { Horarios } from "./Horarios";
+import { useParams } from "next/navigation";
+import { useCineById } from "app/hooks/querys/cines";
+import { usePreciosByCineId } from "app/hooks/querys/precios";
+import { usePeliculasEnCarteleraPorCine } from "app/hooks/usePeliculasEnCarteleraByCineId";
 
-interface CineDetailProps {
-  horarios: Horario[];
-  prices: Precio[];
-  cine: Cine;
-}
-
-export const CineDetail = ({ horarios, prices, cine }: CineDetailProps) => {
+export const CineDetail = () => {
   const { theme } = useTheme();
+  const { idCine } = useParams<{ idCine: string }>();
+  const {
+    cine,
+    isLoading: isLoadingCine,
+    isError: isErrorCine,
+  } = useCineById(idCine);
+  const {
+    precios,
+    isLoading: isLoadingPrecios,
+    isError: isErrorPrecios,
+  } = usePreciosByCineId(idCine);
+
+  const { peliculasEnCartelera, isLoading, isError } =
+    usePeliculasEnCarteleraPorCine(idCine);
+
+  if (isError || isErrorCine || isErrorPrecios) {
+    <p>Error</p>;
+  }
+
+  if (isLoading || isLoadingCine || isLoadingPrecios) {
+    return (
+      <div
+        className="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-surface opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite] text-blue-500"
+        role="status"
+      >
+        <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+          Loading...
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="lg:col-span-8 space-y-8">
       {/* Theater Header + Horarios */}
-      <Horarios cine={cine} horarios={horarios} />
+      <Horarios cine={cine!} horarios={peliculasEnCartelera} />
 
       {/* Prices */}
       <div
@@ -39,7 +65,7 @@ export const CineDetail = ({ horarios, prices, cine }: CineDetailProps) => {
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {prices.map((price) => (
+          {precios.map((price) => (
             <div
               key={price.id}
               className={`p-4 rounded-lg ${
@@ -84,7 +110,7 @@ export const CineDetail = ({ horarios, prices, cine }: CineDetailProps) => {
         </div>
         <div className="aspect-video rounded-lg overflow-hidden">
           <iframe
-            src={`${cine.mapa}`}
+            src={`${cine!.mapa}`}
             width="100%"
             height="100%"
             className="border-0"

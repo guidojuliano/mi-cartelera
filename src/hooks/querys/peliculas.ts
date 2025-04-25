@@ -3,6 +3,7 @@ import {
   fetchPeliculas,
   fetchPeliculaById,
   fetchProximasEstrenosHome,
+  fetchPeliculaBySlug,
 } from "app/controller/controller";
 
 export const usePeliculas = () => {
@@ -47,6 +48,20 @@ export const usePeliculaById = (id: string) => {
     queryKey: ["pelicula", id],
     queryFn: () => fetchPeliculaById(id),
     enabled: !!id,
+  });
+  return { pelicula, isLoading, error, isError };
+};
+
+export const usePeliculaBySlug = (slug: string) => {
+  const {
+    data: pelicula,
+    isLoading,
+    error,
+    isError,
+  } = useQuery({
+    queryKey: ["pelicula", slug],
+    queryFn: () => fetchPeliculaBySlug(slug),
+    enabled: !!slug,
   });
   return { pelicula, isLoading, error, isError };
 };

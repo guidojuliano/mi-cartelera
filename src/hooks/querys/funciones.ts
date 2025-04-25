@@ -47,7 +47,7 @@ export const useFuncionByCineId = (id: string) => {
   return { funciones: funciones || [], isLoading, error, isError };
 };
 
-export const useFuncionesByPeliculaId = (id: string) => {
+export const useFuncionesByPeliculaId = (id: string, options = {}) => {
   const {
     data: funciones,
     isLoading,
@@ -57,6 +57,7 @@ export const useFuncionesByPeliculaId = (id: string) => {
     queryKey: ["funciones", id],
     queryFn: () => fetchFuncionesByPeliculaId(id),
     enabled: !!id,
+    ...options,
   });
   return { funciones: funciones || [], isLoading, error, isError };
 };
